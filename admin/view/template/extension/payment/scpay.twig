@@ -1,0 +1,206 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<div class="pull-right">
+				<button type="submit" form="form-worldpay" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary">
+					<i class="fa fa-save"></i>
+				</button>
+				<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+					<i class="fa fa-reply"></i>
+				</a>
+			</div>
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+				{% for breadcrumb in breadcrumbs %}
+					<li>
+						<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+					</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="container-fluid">
+		{% if error_warning is not empty %}
+			<div class="alert alert-danger">
+				<i class="fa fa-exclamation-circle"></i>
+				{{ error_warning }}
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+			</div>
+		{% endif %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+					<i class="fa fa-pencil"></i>
+					{{ text_edit }}</h3>
+			</div>
+			<div class="panel-body">
+				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-worldpay" class="form-horizontal">
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-merchant">{{ entry_merchant }}</label>
+						<div class="col-sm-10">
+							<input type="text" name="payment_scpay_merchant" value="{{ payment_scpay_merchant }}" placeholder="{{ entry_merchant }}" id="input-merchant" class="form-control"/>
+							{% if error_merchant is not empty %}
+								<div class="text-danger">{{ error_merchant }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="form-group required">
+						<label class="col-sm-2 control-label" for="input-password">
+							<span data-toggle="tooltip" title="{{ help_password }}">{{ entry_password }}</span>
+						</label>
+						<div class="col-sm-10">
+							<input type="text" name="payment_scpay_password" value="{{ payment_scpay_password }}" placeholder="{{ entry_password }}" id="input-password" class="form-control"/>
+							{% if error_password is not empty %}
+								<div class="text-danger">{{ error_password }}</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-encryption">{{ entry_hashtype }}</label>
+						<div class="col-sm-10">
+							<select name="payment_scpay_hashtype" id="input-encryption" class="form-control">
+								{% if payment_scpay_hashtype == 'sha256' %}
+									<option value="sha256" selected="selected">sha256</option>
+								{% else %}
+									<option value="sha256">sha256</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-test">{{ entry_env_mode }}</label>
+						<div class="col-sm-10">
+							<select name="payment_scpay_environment" id="input-test" class="form-control">
+								{% if payment_scpay_environment == 'test' %}
+									<option value="test" selected="selected">{{ text_test }}</option>
+								{% else %}
+									<option value="test">{{ text_test }}</option>
+								{% endif %}
+
+								{% if payment_scpay_environment == 'live' %}
+									<option value="live" selected="selected">{{ text_live }}</option>
+								{% else %}
+									<option value="live">{{ text_live }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-redirect">{{ entry_redirect }}</label>
+						<div class="col-sm-10">
+							<input type="text" name="payment_scpay_redirect" value="{{ payment_scpay_redirect }}" placeholder="{{ entry_redirect }}" id="input-redirect" class="form-control"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-total">
+							<span data-toggle="tooltip" title="{{ help_total }}">{{ entry_total }}</span>
+						</label>
+						<div class="col-sm-10">
+							<input type="text" name="payment_scpay_total" value="{{ payment_scpay_total }}" placeholder="{{ entry_total }}" id="input-total" class="form-control"/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-order-status-success">{{ order_success_status }}</label>
+						<div class="col-sm-10">
+							<select name="payment_scpay_success_status_id" id="input-order-status-success" class="form-control">
+								{% for order_status in order_statuses %}
+									{% if order_status.order_status_id == payment_scpay_success_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+									{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-order-status-failed">{{ order_failed_status }}</label>
+						<div class="col-sm-10">
+							<select name="payment_scpay_failed_status_id" id="input-order-status-failed" class="form-control">
+								{% for order_status in order_statuses %}
+									{% if order_status.order_status_id == payment_scpay_failed_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+									{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-order-status-cancel">{{ order_cancel_status }}</label>
+						<div class="col-sm-10">
+							<select name="payment_scpay_cancel_status_id" id="input-order-status-cancel" class="form-control">
+								{% for order_status in order_statuses %}
+									{% if order_status.order_status_id == payment_scpay_cancel_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+									{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-order-status-pending">{{ order_pending_status }}</label>
+						<div class="col-sm-10">
+							<select name="payment_scpay_pending_status_id" id="input-order-status-pending" class="form-control">
+								{% for order_status in order_statuses %}
+									{% if order_status.order_status_id == payment_scpay_pending_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+									{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+          			<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-order-status">{{ entry_order_status }}</label>
+						<div class="col-sm-10">
+							<select name="payment_scpay_order_status_id" id="input-order-status" class="form-control">
+								{% for order_status in order_statuses %}
+									{% if order_status.order_status_id == payment_scpay_order_status_id %}
+										<option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+									{% else %}
+										<option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+									{% endif %}
+								{% endfor %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+						<div class="col-sm-10">
+							<select name="payment_scpay_status" id="input-status" class="form-control">
+								{% if payment_scpay_status == 1 %}
+									<option value="1" selected="selected">{{ text_enabled }}</option>
+									<option value="0">{{ text_disabled }}</option>
+								{% else %}
+									<option value="1">{{ text_enabled }}</option>
+									<option value="0" selected="selected">{{ text_disabled }}</option>
+								{% endif %}
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+						<div class="col-sm-10">
+							<input type="text" name="scpay_sort_order" value="{{ scpay_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control"/>
+						</div>
+					</div>
+          
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{{ footer }}
