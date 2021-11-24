@@ -112,7 +112,7 @@ class ControllerExtensionPaymentSCPay extends Controller {
                 if ($sign == $var['SCSign']) {
                     if ($var['RespCode'] == '00' || $var['RespDesc'] == 'Success') { // success
 
-                        if ($order['order_status_id'] == '1' || $order['order_status_id'] == '2' || $order['order_status_id'] == '10') { // check order is pending or proccessing
+                        if ($order['order_status_id'] == '1' || $order['order_status_id'] == '2' || $order['order_status_id'] == '0') { // check order is pending or proccessing
                             
 							$message = "Payment successfully made through Share Commerce Payment, Transaction Reference " . $var['TxnRefNo'];
 							$this->model_checkout_order->addOrderHistory($order_id, $this->config->get('payment_scpay_success_status_id'), $message, true);
