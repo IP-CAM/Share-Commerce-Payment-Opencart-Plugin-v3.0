@@ -74,7 +74,7 @@ class ControllerExtensionPaymentSCPay extends Controller {
 	public function callback(){
 
 		$json = file_get_contents('php://input');
-        $var = json_decode($json);
+        $var = json_decode($json, true);
 
 		$log = new Log('SCPaymentCallback.log');
 		$log->write($json);
