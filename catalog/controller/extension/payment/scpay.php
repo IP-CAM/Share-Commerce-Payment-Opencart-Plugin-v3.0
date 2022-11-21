@@ -18,10 +18,11 @@ class ControllerExtensionPaymentSCPay extends Controller {
 		$billingstate = $order_info['payment_zone'];
 		$billingcity = $order_info['payment_city'];
 		$redirecturl = $this->config->get('payment_scpay_redirect');
+        $currencycode = $order_info['currency_code'];
 
 		$data = array(
             'MerchantID' => $this->config->get('payment_scpay_merchant'),
-            'CurrencyCode' => 'MYR',
+            'CurrencyCode' => $currencycode,
             'TxnAmount' => $amount,
             'MerchantOrderNo' => $order_id . '_' . time(),
             'MerchantOrderDesc' => "Payment for Order No. : " . $order_id,
