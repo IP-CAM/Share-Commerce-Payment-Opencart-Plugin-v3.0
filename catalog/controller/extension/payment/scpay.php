@@ -14,7 +14,7 @@ class ControllerExtensionPaymentSCPay extends Controller {
 		$email = $order_info['email'];
 		$billingaddress1 = $order_info['payment_address_1'];
 		$billingaddress2 = $order_info['payment_address_2'];
-		$billingcountry = $this->db->query("select iso_code_2 from country where name = '".$order_info['payment_country']."'")->row['iso_code_2'];
+		$billingcountry = $this->db->query("select iso_code_2 from " . DB_PREFIX . "country where name = '".$order_info['payment_country']."'")->row['iso_code_2'];
 		$billingstate = $order_info['payment_zone'];
 		$billingcity = $order_info['payment_city'];
 		$redirecturl = $this->config->get('payment_scpay_redirect');
