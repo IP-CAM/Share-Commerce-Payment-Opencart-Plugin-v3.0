@@ -52,7 +52,7 @@ class ControllerExtensionPaymentSCPay extends Controller {
         }
 
 		if ($this->config->get('payment_scpay_environment')=='test'){
-			$data['action'] = 'https://staging.payment.share-commerce.com/payment'; 
+			$data['action'] = 'https://stagingpayment.share-commerce.com/payment'; 
 		}else{
 			$data['action'] = 'https://payment.share-commerce.com/payment';
 		}
