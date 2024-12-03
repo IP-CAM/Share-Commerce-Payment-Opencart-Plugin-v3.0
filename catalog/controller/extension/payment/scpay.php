@@ -39,6 +39,8 @@ class ControllerExtensionPaymentSCPay extends Controller {
             'CustAddressState' => $billingstate,
             'CustAddressCity' => $billingcity,
             'RedirectUrl' => $redirecturl,
+            'PaymentMethod' => '',
+            'Versioning' => 7,
         );
 
 		# make sign
